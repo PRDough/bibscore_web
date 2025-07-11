@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container mt-5 text-center">
-  <h1>📚 Welcome to BibScore!</h1>
+  <h1>📚 Welcome to BibScorer!</h1>
   <p class="lead">Upload a BibTeX file, set your custom keywords and weights, and rank your references.</p>
 </div>
 
@@ -9,7 +9,7 @@
 <div class="container mt-4">
   <h2>📂 Upload Your BibTeX File (.bib)</h2>
   {% if uploaded_filename %}
-    <p class="text-success">✅ Uploaded: {{ uploaded_filename }}</p>
+  <p class="text-success">✅ Uploaded: {{ uploaded_filename }}</p>
   {% endif %}
 
   <form action="/" method="post" enctype="multipart/form-data">
@@ -24,7 +24,8 @@
     </div>
     <p class="text-muted">Enter keyword-weight pairs (e.g., <code>just transition:3</code>)</p>
     <div class="mb-3">
-      <textarea name="weights" class="form-control" rows="5" placeholder="just transition:3&#10;steel:2" required>{{ weights_text or '' }}</textarea>
+      <textarea name="weights" class="form-control" rows="5" placeholder="just transition:3&#10;steel:2"
+        required>{{ weights_text or '' }}</textarea>
     </div>
 
     {% if headers %}
