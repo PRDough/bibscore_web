@@ -15,6 +15,15 @@ os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 def clean_text(text):
     if pd.isna(text):
         return ""
+    # --- 处理被破坏的 LaTeX 表达式 ---
+    text = re.sub(r"CO\$_[^0-9]*?(\d)\$", r"CO\1", text, flags=re.IGNORECASE)
+    text = re.sub(r"H\$_[^0-9]*?(\d)\$", r"H\1", text, flags=re.IGNORECASE)
+    text = re.sub(r"([A-Z])\$_[^0-9]*?(\d)\$", r"\1\2", text, flags=re.IGNORECASE)
+
+    # 删除所有残留的 $...$ latex 公式
+    text = re.sub(r"\$[^$]*\$", "", text)
+   
+    # --- 其他通用符号清洗 ---
     text = re.sub(r"\$_ ?(?:extrm|textrm)?(\d)\$", r"\1", text)
     text = re.sub(r"[{}]", "", text)
     text = re.sub(r"\\%", "%", text)
@@ -26,6 +35,7 @@ def clean_text(text):
     text = re.sub(r"CO\s*2", "CO2", text)
     text = re.sub(r"\s+", " ", text)
     return text.strip()
+
 
 # 打分函数
 def score_entry(keywords, weights):
