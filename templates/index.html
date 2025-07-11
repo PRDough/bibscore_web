@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-5 text-center">
+  <h1>📚 Welcome to BibScore!</h1>
+  <p class="lead">Upload a BibTeX file, set your custom keywords and weights, and rank your references.</p>
+</div>
+
+<!-- 📂 Upload Section -->
+<div class="container mt-4">
+  <h2>📂 Upload Your BibTeX File (.bib)</h2>
+  {% if uploaded_filename %}
+    <p class="text-success">✅ Uploaded: {{ uploaded_filename }}</p>
+  {% endif %}
+
+  <form action="/" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+      <input type="file" class="form-control" name="bibfile" accept=".bib">
+    </div>
+
+    <!-- 🎯 Keyword Weighting Section -->
+    <div class="d-flex justify-content-between align-items-center mt-4">
+      <h3 class="mb-0">🎯 Define Your Keywords and Weights</h3>
+      <button type="submit" class="btn btn-primary">🔍 Analyze and Rank</button>
+    </div>
+    <p class="text-muted">Enter keyword-weight pairs (e.g., <code>just transition:3</code>)</p>
+    <div class="mb-3">
+      <textarea name="weights" class="form-control" rows="5" placeholder="just transition:3&#10;steel:2" required>{{ weights_text or '' }}</textarea>
+    </div>
+
+    {% if headers %}
+    <!-- 📌 Field Selection Section -->
+    <h3 class="mt-4">📌 Select Fields to Include in CSV Output</h3>
+    <p class="text-muted">Check the fields you want to include in the final export</p>
+    <div class="mb-3 text-start">
+      {% for h in headers %}
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="fields" value="{{ h }}">
+        <label class="form-check-label">{{ h }}</label>
+      </div>
+      {% endfor %}
+    </div>
+    <button formaction="/download" formmethod="post" class="btn btn-success mt-3">⬇️ Download Selected Fields</button>
+    {% endif %}
+
+  </form>
+</div>
+{% endblock %}
